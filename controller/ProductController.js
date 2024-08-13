@@ -25,7 +25,12 @@ getProductByBarcode = async (req, res) => {
     try {
         const { barcode } = req.params
 
-        const product = await Product.findOne({ barcode })
+        const product = await Product.findOne({ 
+            where:{
+                barcode: barcode
+            }
+            })
+                
 
         if (!product) {
             return res.status(400).json({ message: "Produto não encontrado" })
@@ -42,7 +47,10 @@ updateProductByBarcode = async (req, res) => {
         const { barcode } = req.params
         const { name, price, description, stock } = req.body
 
-        const product = await Product.findOne({ barcode })
+        const product = await Product.findOne({  
+            where:{
+                barcode: barcode
+        } })
 
         if (!product) {
             return res.status(404).json({ error: 'Produto não encontrado' })
@@ -51,7 +59,7 @@ updateProductByBarcode = async (req, res) => {
         product.name = name
         product.price = price
         product.description = description
-        product.status = stock
+        product.stock = stock
 
         await product.save()
 
